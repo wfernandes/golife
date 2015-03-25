@@ -15,10 +15,24 @@ import (
 var _ = Describe("Server", func() {
 
 	Context("handlers", func() {
+
+		var (
+			s          *server.TimelineServer
+			testServer *httptest.Server
+		)
+
+		BeforeEach(func() {
+			s = server.NewTimelineServer()
+
+		})
+
+		AfterEach(func() {
+			testServer.Close()
+		})
+
 		It("should return a 200 response with helloworld text", func() {
 
-			s := server.NewTimelineServer()
-			testServer := httptest.NewServer(http.HandlerFunc(s.ServeHome))
+			testServer = httptest.NewServer(http.HandlerFunc(s.ServeHome))
 			defer testServer.Close()
 			resp, _ := http.Get(testServer.URL)
 			defer resp.Body.Close()
@@ -28,8 +42,8 @@ var _ = Describe("Server", func() {
 		})
 
 		It("should return JSON formatted hello world from /json endpoint", func() {
-			s := server.NewTimelineServer()
-			testServer := httptest.NewServer(http.HandlerFunc(s.ServeJSON))
+
+			testServer = httptest.NewServer(http.HandlerFunc(s.ServeJSON))
 			defer testServer.Close()
 
 			resp, _ := http.Get(fmt.Sprintf("%s/json", testServer.URL))
