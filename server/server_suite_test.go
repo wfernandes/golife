@@ -1,4 +1,4 @@
-package main_test
+package server_test
 
 import (
 	. "github.com/onsi/ginkgo"
@@ -7,7 +7,7 @@ import (
 	"testing"
 )
 
-func TestGolife(t *testing.T) {
+func TestServer(t *testing.T) {
 	RegisterFailHandler(Fail)
-	RunSpecs(t, "Golife Suite")
+	RunSpecs(t, "Server Suite")
 }
