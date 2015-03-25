@@ -6,6 +6,8 @@ import (
 	"log"
 	"net/http"
 	"time"
+
+	"github.com/gorilla/mux"
 )
 
 type TimelineServer struct{}
@@ -44,12 +46,17 @@ func (s *TimelineServer) ServeJSON(resp http.ResponseWriter, req *http.Request) 
 }
 
 func (s *TimelineServer) Start() {
-	http.HandleFunc("/", s.ServeHome)
-	http.HandleFunc("/json", s.ServeJSON)
 
-	err := http.ListenAndServe(":8080", nil)
+	mx := mux.NewRouter()
+
+	mx.HandleFunc("/", s.ServeHome)
+	mx.HandleFunc("/timeline", s.ServeJSON)
+
+	log.Print("Starting Timeline Server...")
+	err := http.ListenAndServe(":8080", mx)
 	if err != nil {
 		log.Fatal("ListenAndServer: ", err.Error())
+		return
 	}
 
 }

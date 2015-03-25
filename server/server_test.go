@@ -41,12 +41,12 @@ var _ = Describe("Server", func() {
 			Expect(ioutil.ReadAll(resp.Body)).To(ContainSubstring("helloworld"))
 		})
 
-		It("should return JSON formatted hello world from /json endpoint", func() {
+		It("should return JSON formatted hello world from /timeline endpoint", func() {
 
 			testServer = httptest.NewServer(http.HandlerFunc(s.ServeJSON))
 			defer testServer.Close()
 
-			resp, _ := http.Get(fmt.Sprintf("%s/json", testServer.URL))
+			resp, _ := http.Get(fmt.Sprintf("%s/timeline", testServer.URL))
 			defer resp.Body.Close()
 
 			Expect(resp.StatusCode).To(Equal(200))
