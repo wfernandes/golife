@@ -11,6 +11,10 @@ import (
 type TimelineServer struct{}
 
 type Timeline struct {
+	Events []Event
+}
+
+type Event struct {
 	StartDate time.Time
 	Headline  string
 }
@@ -21,9 +25,13 @@ func (s *TimelineServer) ServeHome(resp http.ResponseWriter, req *http.Request) 
 
 func (s *TimelineServer) ServeJSON(resp http.ResponseWriter, req *http.Request) {
 
-	t := Timeline{
+	e := Event{
 		StartDate: time.Now(),
 		Headline:  "Hello World!",
+	}
+
+	t := Timeline{
+		Events: []Event{e},
 	}
 	output, err := json.Marshal(t)
 
@@ -43,6 +51,7 @@ func (s *TimelineServer) Start() {
 	if err != nil {
 		log.Fatal("ListenAndServer: ", err.Error())
 	}
+
 }
 
 func NewTimelineServer() *TimelineServer {
