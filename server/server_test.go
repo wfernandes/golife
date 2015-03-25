@@ -50,7 +50,9 @@ var _ = Describe("Server", func() {
 			defer resp.Body.Close()
 
 			Expect(resp.StatusCode).To(Equal(200))
-			Expect(ioutil.ReadAll(resp.Body)).To(ContainSubstring("{\"hello\":\"world\"}"))
+			body, _ := ioutil.ReadAll(resp.Body)
+			Expect(body).To(ContainSubstring("\"Headline\":\"Hello World!\""))
+			Expect(body).To(ContainSubstring("\"StartDate\""))
 		})
 	})
 })

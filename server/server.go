@@ -5,12 +5,14 @@ import (
 	"io"
 	"log"
 	"net/http"
+	"time"
 )
 
 type TimelineServer struct{}
 
 type Timeline struct {
-	Data map[string]string
+	StartDate time.Time
+	Headline  string
 }
 
 func (s *TimelineServer) ServeHome(resp http.ResponseWriter, req *http.Request) {
@@ -18,10 +20,10 @@ func (s *TimelineServer) ServeHome(resp http.ResponseWriter, req *http.Request) 
 }
 
 func (s *TimelineServer) ServeJSON(resp http.ResponseWriter, req *http.Request) {
-	data := make(map[string]string)
-	data["hello"] = "world"
+
 	t := Timeline{
-		Data: data,
+		StartDate: time.Now(),
+		Headline:  "Hello World!",
 	}
 	output, err := json.Marshal(t)
 
