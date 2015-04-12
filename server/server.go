@@ -2,9 +2,11 @@ package server
 
 import (
 	"encoding/json"
+	"fmt"
 	"io"
 	"log"
 	"net/http"
+	"os"
 	"time"
 
 	"github.com/gorilla/mux"
@@ -53,12 +55,22 @@ func (s *TimelineServer) Start() {
 	mx.HandleFunc("/timeline", s.ServeJSON)
 
 	log.Print("Starting Timeline Server...")
-	err := http.ListenAndServe(":8080", mx)
+
+	err := http.ListenAndServe(getPort(), mx)
 	if err != nil {
-		log.Fatal("ListenAndServer: ", err.Error())
+		log.Fatal("ListenAndServe: ", err.Error())
 		return
 	}
 
+}
+
+func getPort() string {
+	port := os.Getenv("PORT")
+	if port == "" {
+		port = "8080"
+	}
+
+	return fmt.Sprintf(":%s", port)
 }
 
 func NewTimelineServer() *TimelineServer {
